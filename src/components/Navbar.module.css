@@ -46,8 +46,8 @@
 
 .menu-button {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1rem;
+    top: 1rem;
+    left: 4rem;
     cursor: pointer;
     z-index: 999;
     display: flex;

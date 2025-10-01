@@ -32,8 +32,8 @@
 
 .toogleSearch {
     position: absolute;
-    bottom: 2rem;
-    right: 5rem;
+    top: 1.2rem;
+    left: 8rem;
     z-index: 1000;
     padding: .6rem;
     color: white;
@@ -45,6 +45,7 @@
 
 @media (max-width: 640px) {
     .toogleSearch {
-        bottom: 3rem;
+        top: 5.5rem;
+        left: 1rem;
     }
 }

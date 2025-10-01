@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 // CSS
 import styles from './Map.module.css'
 import Rating from '@mui/material/Rating'
@@ -59,6 +59,8 @@ function MapPart({ selectedCategory }) {
     }
 
     const markerRefs = useRef({})
+
+    const base = import.meta.env.BASE_URL
 
     // Filtera platser efter kategori
     const filteredData =
@@ -128,8 +130,8 @@ function MapPart({ selectedCategory }) {
                         {filteredData.map((marker) => {
                             const markerIconObj = new Icon({
                                 iconUrl: marker.icon
-                                    ? `/img/${marker.icon}`
-                                    : `/img/location.webp`,
+                                    ? `${base}/img/${marker.icon}`
+                                    : `${base}/img/location.webp`,
                                 iconSize: [30, 30]
                             })
 
