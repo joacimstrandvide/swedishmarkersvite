@@ -1,0 +1,22 @@
+.aboutContainer {
+    text-align: center;
+}
+
+.aboutContainer h2 {
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 4rem;
+}
+
+.aboutContainer h3 {
+    font-family: 'Oswald', sans-serif;
+    margin-top: 3rem;
+}
+
+.aboutContainer p {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.aboutContainer a {
+    color: #006aa7;
+    text-decoration: none;
+}

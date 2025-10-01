@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+#root {
+    height: 100vh;
+}
+
+.leaflet-container {
+    height: 100vh;
+}
+
+/* sätt höjd och bredd att matcha skärmen */
+html,
+body,
+#map {
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Ta bort border på zooma in & ut knappen */
+html
+    body
+    div#map.leaflet-container.leaflet-touch.leaflet-fade-anim.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom
+    div.leaflet-control-container
+    div.leaflet-top.leaflet-left
+    div.leaflet-control-zoom.leaflet-bar.leaflet-control {
+    border: none;
+}
+
+/* Se till att kartan är bakom när menyn är öppen */
+div.leaflet-top {
+    z-index: 800;
+}
+
+/* Cluster ikon */
+div.leaflet-marker-icon {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+/* Popup innehål */
+.popup-content {
+    width: 50%;
+}
+
+@media (max-width: 640px) {
+    .popup-content {
+        width: 80% !important;
+    }
+}
+
+.open {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    transition: 0.4s;
+}
+
+.open:hover {
+    border: 2px solid #fecc02;
+    border-radius: 10px;
+    color: #006aa7;
+}
+
+.modal > .close {
+    cursor: pointer;
+    position: absolute;
+    display: block;
+    padding: 2px 5px;
+    line-height: 20px;
+    right: -10px;
+    top: -10px;
+    font-size: 2rem;
+    background: #ffffff;
+    border-radius: 1.5rem;
+    border: none;
+}

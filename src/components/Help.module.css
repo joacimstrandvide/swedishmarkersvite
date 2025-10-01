@@ -1,0 +1,12 @@
+.helpContainer {
+    text-align: center;
+}
+
+.helpContainer h2 {
+    font-family: 'Oswald', sans-serif;
+    margin-bottom: 4rem;
+}
+
+.helpContainer p {
+    font-family: Arial, Helvetica, sans-serif;
+}

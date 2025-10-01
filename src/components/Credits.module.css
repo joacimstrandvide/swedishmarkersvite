@@ -1,0 +1,12 @@
+.creditContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+}
+
+.creditContainer a {
+    color: #006aa7;
+    text-decoration: none;
+    margin-right: 1rem;
+}
