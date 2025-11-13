@@ -9,7 +9,7 @@ function About() {
                 around Sweden.
             </p>
             <h3>
-                Created by{' '}
+                Created by
                 <a
                     href="https://www.strandvide.se"
                     target="_blank"

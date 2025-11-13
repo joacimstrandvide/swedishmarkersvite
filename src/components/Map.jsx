@@ -1,3 +1,4 @@
+// Map.jsx (updated)
 import { useState, useEffect, useRef } from 'react'
 // CSS
 import styles from './Map.module.css'
@@ -13,7 +14,7 @@ import {
 } from 'react-leaflet'
 import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-// Sök funktionen
+// Sök funktionen (must remain inside MapContainer)
 import OSMFetch from './OSMFetch'
 import L from 'leaflet'
 // Ikonen när man söker
@@ -29,9 +30,8 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow
 })
 
-function MapPart({ selectedCategory }) {
+function MapPart({ selectedCategory, searchQuery }) {
     const [data, setData] = useState([])
-    const [showOSMFetch, setShowOSMFetch] = useState(true)
 
     // Hämtar alla platser
     useEffect(() => {
@@ -70,19 +70,8 @@ function MapPart({ selectedCategory }) {
 
     return (
         <div style={{ position: 'relative' }}>
-            {/* Knappen för att gömma / visa sök fältet */}
-            <button
-                className={styles.toogleSearch}
-                style={{
-                    backgroundColor: showOSMFetch ? '#d9534f' : '#5cb85c'
-                }}
-                onClick={() => setShowOSMFetch((prev) => !prev)}
-            >
-                {showOSMFetch ? 'Hide Search' : 'Show Search'}
-            </button>
-
             <MapContainer center={[59.4036, 18.3297]} zoom={11}>
-                {showOSMFetch && <OSMFetch />}
+                <OSMFetch searchQuery={searchQuery} />
 
                 {/* Olika kartor */}
                 <LayersControl position="topright">
@@ -95,7 +84,7 @@ function MapPart({ selectedCategory }) {
 
                     <LayersControl.BaseLayer name="Esri World Imagery">
                         <TileLayer
-                            attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+                            attribution="Tiles &copy; Esri &mdash; Source: Esri, ..."
                             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                         />
                     </LayersControl.BaseLayer>
@@ -125,8 +114,6 @@ function MapPart({ selectedCategory }) {
                         chunkedLoading
                         iconCreateFunction={createClusterIcon}
                     >
-                        {/* Ikoner för markörer */}
-                        {/* Om ingen ikon specificeras får den en default */}
                         {filteredData.map((marker) => {
                             const markerIconObj = new Icon({
                                 iconUrl: marker.icon

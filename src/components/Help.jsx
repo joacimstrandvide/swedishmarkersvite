@@ -13,7 +13,6 @@ function Help() {
                 to display relevant results within the area shown on the map.
                 Information is retrieved from overpass using openstreetmap.
             </p>
-            <p>The search field can also be hidden</p>
         </section>
     )
 }

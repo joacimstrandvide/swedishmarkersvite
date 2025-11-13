@@ -7,13 +7,19 @@ import Navbar from './components/Navbar'
 function App() {
     // Filtrering efter kategori
     const [selectedCategory, setSelectedCategory] = useState('all')
+    const [searchQuery, setSearchQuery] = useState('')
+
     return (
         <>
             <Navbar
                 selectedCategory={selectedCategory}
                 onCategoryChange={setSelectedCategory}
+                onSearch={setSearchQuery}
             />
-            <Map selectedCategory={selectedCategory} />
+            <Map
+                selectedCategory={selectedCategory}
+                searchQuery={searchQuery}
+            />
         </>
     )
 }

@@ -6,8 +6,9 @@ import About from './About'
 import Credits from './Credits'
 import Help from './Help'
 import styles from './Navbar.module.css'
+import SearchBar from './Searchbar'
 
-function Navbar({ selectedCategory, onCategoryChange }) {
+function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
     return (
         <>
             {/* Navigationen */}
@@ -45,6 +46,8 @@ function Navbar({ selectedCategory, onCategoryChange }) {
                         <option value="/img/parking.webp">Parking</option>
                     </select>
                 </div>
+                {/* Sök */}
+                 <SearchBar onSearch={onSearch} />
                 {/* Info */}
                 <Popup
                     trigger={<button className={styles.open}>Info</button>}
