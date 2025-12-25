@@ -48,9 +48,9 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                 </div>
                 {/* Sök */}
                  <SearchBar onSearch={onSearch} />
-                {/* Info */}
+                {/* Om */}
                 <Popup
-                    trigger={<button className={styles.open}>Info</button>}
+                    trigger={<button className={styles.open}>About</button>}
                     modal
                     nested
                 >
@@ -99,19 +99,6 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                         </div>
                     )}
                 </Popup>
-                {/* Antalet besökare totalt & idag */}
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F">
-                    <img
-                        src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F&label=Visitors%20Total&countColor=%23263759"
-                        alt="visitors"
-                    />
-                </a>
-                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F">
-                    <img
-                        src="https://api.visitorbadge.io/api/daily?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F&label=Visitors%20Today&countColor=%23263759"
-                        alt="visitors"
-                    />
-                </a>
             </nav>
         </>
     )
