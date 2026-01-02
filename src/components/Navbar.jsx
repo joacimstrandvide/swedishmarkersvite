@@ -2,7 +2,6 @@
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
 // Komponenter
-import About from './About'
 import Credits from './Credits'
 import Help from './Help'
 import styles from './Navbar.module.css'
@@ -47,24 +46,7 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                     </select>
                 </div>
                 {/* Sök */}
-                 <SearchBar onSearch={onSearch} />
-                {/* Om */}
-                <Popup
-                    trigger={<button className={styles.open}>About</button>}
-                    modal
-                    nested
-                >
-                    {(close) => (
-                        <div className="modal">
-                            <button className="close" onClick={close}>
-                                &times;
-                            </button>
-                            <div className="content">
-                                <About />
-                            </div>
-                        </div>
-                    )}
-                </Popup>
+                <SearchBar onSearch={onSearch} />
                 {/* Hjälp */}
                 <Popup
                     trigger={<button className={styles.open}>Help</button>}
@@ -99,6 +81,13 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                         </div>
                     )}
                 </Popup>
+                {/* Antalet besökare totalt */}
+                <a href="https://visitorbadge.io/status?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F">
+                    <img
+                        src="https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fjoacimstrandvide.github.io%2FSwedishMarkers%2F&label=Visitors%20Total&countColor=%23263759"
+                        alt="visitors"
+                    />
+                </a>
             </nav>
         </>
     )
