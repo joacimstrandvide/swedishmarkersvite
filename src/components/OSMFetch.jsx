@@ -63,7 +63,7 @@ out center qt;
 
     return (
         <>
-            {loading && <div className={styles.loading}>Loading data...</div>}
+            {loading && <div className={styles.loading}>Laddar data...</div>}
             {osmData.map((el) => {
                 const position =
                     el.lat && el.lon

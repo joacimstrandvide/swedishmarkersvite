@@ -35,21 +35,21 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                         onChange={(e) => onCategoryChange(e.target.value)}
                     >
                         {/* Alla kategorier */}
-                        <option value="all">All</option>
-                        <option value="/img/boat.webp">Boat</option>
-                        <option value="/img/food.webp">Food</option>
-                        <option value="/img/swim.webp">Swimming</option>
+                        <option value="all">Alla</option>
+                        <option value="/img/boat.webp">Båt</option>
+                        <option value="/img/food.webp">Mat</option>
+                        <option value="/img/swim.webp">Simmning</option>
                         <option value="/img/kayak.webp">Kayak</option>
-                        <option value="/img/historic.webp">Historical</option>
-                        <option value="/img/nature.webp">Nature</option>
-                        <option value="/img/parking.webp">Parking</option>
+                        <option value="/img/historic.webp">Historiskt</option>
+                        <option value="/img/nature.webp">Natur</option>
+                        <option value="/img/parking.webp">Parkering</option>
                     </select>
                 </div>
                 {/* Sök */}
                 <SearchBar onSearch={onSearch} />
                 {/* Hjälp */}
                 <Popup
-                    trigger={<button className={styles.open}>Help</button>}
+                    trigger={<button className={styles.open}>Hjälp</button>}
                     modal
                     nested
                 >
@@ -66,7 +66,7 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                 </Popup>
                 {/* Ikoner */}
                 <Popup
-                    trigger={<button className={styles.open}>Icons</button>}
+                    trigger={<button className={styles.open}>Ikoner</button>}
                     modal
                     nested
                 >

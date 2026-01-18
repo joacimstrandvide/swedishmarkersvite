@@ -1,4 +1,6 @@
-// Map.jsx (updated)
+// Databasen
+import { ref, onValue, push, update, remove } from 'firebase/database'
+import { db } from '../firebase'
 import { useState, useEffect, useRef } from 'react'
 // CSS
 import styles from './Map.module.css'
@@ -10,11 +12,12 @@ import {
     TileLayer,
     Marker,
     Popup,
-    LayersControl
+    LayersControl,
+    useMapEvents
 } from 'react-leaflet'
 import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-// Sök funktionen (must remain inside MapContainer)
+// Sök funktionen
 import OSMFetch from './OSMFetch'
 import L from 'leaflet'
 // Ikonen när man söker
@@ -22,7 +25,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
-// Fixar default ikonen när man söker
+// Fixar standard ikonen när man söker
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
     iconRetinaUrl: markerIcon2x,
@@ -35,18 +38,23 @@ function MapPart({ selectedCategory, searchQuery }) {
 
     // Hämtar alla platser
     useEffect(() => {
-        const fetchMarkers = async () => {
-            try {
-                const response = await fetch(
-                    'https://raw.githubusercontent.com/joacimstrandvide/SwedishMarkers-data/main/locations.json'
-                )
-                const markers = await response.json()
-                setData(markers)
-            } catch (err) {
-                console.error('Failed to fetch marker data:', err)
+        const markersRef = ref(db, 'markers')
+
+        onValue(markersRef, (snapshot) => {
+            const markers = snapshot.val()
+
+            if (!markers) {
+                setData([])
+                return
             }
-        }
-        fetchMarkers()
+
+            const formatted = Object.entries(markers).map(([id, marker]) => ({
+                id,
+                ...marker
+            }))
+
+            setData(formatted)
+        })
     }, [])
 
     // Kluster Ikon
@@ -67,10 +75,53 @@ function MapPart({ selectedCategory, searchQuery }) {
         selectedCategory === 'all'
             ? data
             : data.filter((marker) => marker.icon === selectedCategory)
+    // Lägg till markör
+    const addMarker = (marker) => {
+        const markersRef = ref(db, 'markers')
+        push(markersRef, marker)
+    }
+    // Redigera markör
+    const editMarker = (id, updatedFields) => {
+        const markerRef = ref(db, `markers/${id}`)
+        update(markerRef, updatedFields)
+    }
+    // Ta bort markör
+    const deleteMarker = (id) => {
+        const markerRef = ref(db, `markers/${id}`)
+        remove(markerRef)
+    }
+    // Funktionen för att lägga till ny plats med höger klick
+    function AddMarkerOnRightClick({ onAdd }) {
+        useMapEvents({
+            contextmenu: (e) => {
+                const { lat, lng } = e.latlng
+
+                const name = prompt('Name of place?')
+                if (!name) return
+
+                const popupcontent = prompt('Description?')
+                const score = prompt('Score (1-5)?')
+                const icon =
+                    prompt('Icon filename (swim.webp, boat.webp, etc.)') || null
+
+                onAdd({
+                    lat,
+                    lng,
+                    name,
+                    popupcontent: popupcontent || '',
+                    score: score ? Number(score) : null,
+                    icon
+                })
+            }
+        })
+
+        return null
+    }
 
     return (
         <div style={{ position: 'relative' }}>
             <MapContainer center={[59.4036, 18.3297]} zoom={11}>
+                <AddMarkerOnRightClick onAdd={addMarker} />
                 <OSMFetch searchQuery={searchQuery} />
 
                 {/* Olika kartor */}
@@ -133,16 +184,120 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 >
                                     <Popup>
                                         <div className={styles.popupContent}>
-                                            <h3>{marker.name}</h3>
-                                            <p>{marker.popupcontent}</p>
-                                            {marker.score && (
+                                            {/* Name */}
+                                            <h3>
+                                                {marker.name}
+                                                <button
+                                                    className={
+                                                        styles.popupEditButton
+                                                    }
+                                                    onClick={() => {
+                                                        const newName = prompt(
+                                                            'New name:',
+                                                            marker.name
+                                                        )
+                                                        if (!newName) return
+                                                        editMarker(marker.id, {
+                                                            name: newName
+                                                        })
+                                                    }}
+                                                >
+                                                    ✎
+                                                </button>
+                                            </h3>
+
+                                            {/* Description */}
+                                            <p>
+                                                {marker.popupcontent}
+                                                <button
+                                                    className={
+                                                        styles.popupEditButton
+                                                    }
+                                                    onClick={() => {
+                                                        const newDesc = prompt(
+                                                            'New description:',
+                                                            marker.popupcontent
+                                                        )
+                                                        if (!newDesc) return
+                                                        editMarker(marker.id, {
+                                                            popupcontent:
+                                                                newDesc
+                                                        })
+                                                    }}
+                                                >
+                                                    ✎
+                                                </button>
+                                            </p>
+
+                                            {/* Score */}
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '5px'
+                                                }}
+                                            >
+                                                Score:
                                                 <Rating
-                                                    name="size-medium"
-                                                    defaultValue={marker.score}
+                                                    name={`rating-${marker.id}`}
+                                                    value={marker.score || 0}
                                                     precision={0.5}
                                                     readOnly
                                                 />
-                                            )}
+                                                <button
+                                                    className={
+                                                        styles.popupEditButton
+                                                    }
+                                                    onClick={() => {
+                                                        const newScore = prompt(
+                                                            'Enter new score (1-5):',
+                                                            marker.score || 0
+                                                        )
+                                                        if (!newScore) return
+                                                        editMarker(marker.id, {
+                                                            score: Number(
+                                                                newScore
+                                                            )
+                                                        })
+                                                    }}
+                                                >
+                                                    ✎
+                                                </button>
+                                            </div>
+
+                                            {/* Icon */}
+                                            <div style={{ marginTop: '5px' }}>
+                                                Icon: {marker.icon || 'default'}
+                                                <button
+                                                    className={
+                                                        styles.popupEditButton
+                                                    }
+                                                    onClick={() => {
+                                                        const newIcon = prompt(
+                                                            'Enter new icon filename (swim.webp, boat.webp, etc.):',
+                                                            marker.icon || ''
+                                                        )
+                                                        if (!newIcon) return
+                                                        editMarker(marker.id, {
+                                                            icon: newIcon
+                                                        })
+                                                    }}
+                                                >
+                                                    ✎
+                                                </button>
+                                            </div>
+
+                                            {/* Delete */}
+                                            <button
+                                                className={
+                                                    styles.popupDeleteButton
+                                                }
+                                                onClick={() =>
+                                                    deleteMarker(marker.id)
+                                                }
+                                            >
+                                                Ta bort
+                                            </button>
                                         </div>
                                     </Popup>
                                 </Marker>

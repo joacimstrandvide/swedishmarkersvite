@@ -19,9 +19,9 @@ export default function OSMSearchBar({ onSearch }) {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onFocus={() => setDropdownVisible(true)}
-                    placeholder="Search..."
+                    placeholder="Sök..."
                 />
-                <button type="submit">Search</button>
+                <button type="submit">Sök</button>
             </form>
     )
 }

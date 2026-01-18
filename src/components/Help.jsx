@@ -3,26 +3,26 @@ import styles from './Help.module.css'
 function Help() {
     return (
         <section className={styles.helpContainer}>
-            <h2>Help</h2>
+            <h2>Hjälp</h2>
             <p>
-                On this page, you can easily find interesting and unique places
-                around Sweden.
+                På den här sidan kan du hitta olika intressanta platser runtom i
+                Sverige. Du kan själv lägga till, redigera eller ta bort.
             </p>
             <p>
-                You can filter the locations on the map by opening the menu and
-                selecting a category.
+                Du kan filtrera platserna på kartan efter olika kategorier genom
+                att öppna menyn.
             </p>
             <p>
-                You can also search for specific themes, such as “restaurant,”
-                to display relevant results within the area shown on the map.
-                Information is retrieved from overpass using openstreetmap.
+                Du kan också söka efter specifika termer som "restaurant" för
+                att visa relevanta resultat inom det område som visas på kartan.
+                Informationen hämtas genom overpass med openstreetmap.
             </p>
             <a
                 href="https://www.strandvide.se"
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Created by Joacim Strandvide
+                Skapad av Joacim Strandvide
             </a>
         </section>
     )
