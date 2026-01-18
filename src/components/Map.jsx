@@ -33,31 +33,47 @@ L.Icon.Default.mergeOptions({
     shadowUrl: markerShadow
 })
 
+// De ikoner som finns
+const availableIcons = [
+    'swim.webp',
+    'boat.webp',
+    'food.webp',
+    'kayak.webp',
+    'nature.webp',
+    'parking.webp',
+    'historic.webp',
+    'location.webp' // standard
+]
+
 function MapPart({ selectedCategory, searchQuery }) {
     const [data, setData] = useState([])
+    const markerRefs = useRef({})
+    const base = import.meta.env.BASE_URL
 
     // Hämtar alla platser
     useEffect(() => {
         const markersRef = ref(db, 'markers')
-
         onValue(markersRef, (snapshot) => {
             const markers = snapshot.val()
-
             if (!markers) {
                 setData([])
                 return
             }
-
             const formatted = Object.entries(markers).map(([id, marker]) => ({
                 id,
                 ...marker
             }))
-
             setData(formatted)
         })
     }, [])
 
-    // Kluster Ikon
+    // CRUD-funktioner
+    const addMarker = (marker) => push(ref(db, 'markers'), marker)
+    const editMarker = (id, updatedFields) =>
+        update(ref(db, `markers/${id}`), updatedFields)
+    const deleteMarker = (id) => remove(ref(db, `markers/${id}`))
+
+    // Kluster ikon
     const createClusterIcon = (cluster) => {
         return new divIcon({
             html: `<div class="circle">${cluster.getChildCount()}</div>`,
@@ -66,56 +82,115 @@ function MapPart({ selectedCategory, searchQuery }) {
         })
     }
 
-    const markerRefs = useRef({})
-
-    const base = import.meta.env.BASE_URL
-
-    // Filtera platser efter kategori
+    // Filtera platser
     const filteredData =
         selectedCategory === 'all'
             ? data
             : data.filter((marker) => marker.icon === selectedCategory)
-    // Lägg till markör
-    const addMarker = (marker) => {
-        const markersRef = ref(db, 'markers')
-        push(markersRef, marker)
-    }
-    // Redigera markör
-    const editMarker = (id, updatedFields) => {
-        const markerRef = ref(db, `markers/${id}`)
-        update(markerRef, updatedFields)
-    }
-    // Ta bort markör
-    const deleteMarker = (id) => {
-        const markerRef = ref(db, `markers/${id}`)
-        remove(markerRef)
-    }
-    // Funktionen för att lägga till ny plats med höger klick
+
+    // Lägg till ny plats med höger klick
     function AddMarkerOnRightClick({ onAdd }) {
+        const [newMarker, setNewMarker] = useState(null)
+
         useMapEvents({
             contextmenu: (e) => {
-                const { lat, lng } = e.latlng
-
-                const name = prompt('Name of place?')
-                if (!name) return
-
-                const popupcontent = prompt('Description?')
-                const score = prompt('Score (1-5)?')
-                const icon =
-                    prompt('Icon filename (swim.webp, boat.webp, etc.)') || null
-
-                onAdd({
-                    lat,
-                    lng,
-                    name,
-                    popupcontent: popupcontent || '',
-                    score: score ? Number(score) : null,
-                    icon
+                setNewMarker({
+                    lat: e.latlng.lat,
+                    lng: e.latlng.lng,
+                    name: '',
+                    popupcontent: '',
+                    score: 0,
+                    icon: 'location.webp' /* Standard ikonen */
                 })
             }
         })
 
-        return null
+        const handleAdd = () => {
+            if (!newMarker.name) return
+            onAdd({ ...newMarker, score: Number(newMarker.score) })
+            setNewMarker(null)
+        }
+
+        if (!newMarker) return null
+
+        return (
+            <Marker
+                position={[newMarker.lat, newMarker.lng]}
+                icon={
+                    new Icon({
+                        iconUrl: `${base}/img/${newMarker.icon}`,
+                        iconSize: [30, 30]
+                    })
+                }
+            >
+                <Popup onClose={() => setNewMarker(null)}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '5px',
+                            minWidth: '150px'
+                        }}
+                    >
+                        <input
+                            type="text"
+                            placeholder="Namn"
+                            value={newMarker.name}
+                            onChange={(e) =>
+                                setNewMarker({
+                                    ...newMarker,
+                                    name: e.target.value
+                                })
+                            }
+                        />
+                        <textarea
+                            placeholder="Beskrivning"
+                            value={newMarker.popupcontent}
+                            onChange={(e) =>
+                                setNewMarker({
+                                    ...newMarker,
+                                    popupcontent: e.target.value
+                                })
+                            }
+                        />
+                        <input
+                            type="number"
+                            placeholder="Betyg (1-5)"
+                            min={0}
+                            max={5}
+                            value={newMarker.score}
+                            onChange={(e) =>
+                                setNewMarker({
+                                    ...newMarker,
+                                    score: e.target.value
+                                })
+                            }
+                        />
+                        <select
+                            value={newMarker.icon}
+                            onChange={(e) =>
+                                setNewMarker({
+                                    ...newMarker,
+                                    icon: e.target.value
+                                })
+                            }
+                        >
+                            {availableIcons.map((iconName) => (
+                                <option key={iconName} value={iconName}>
+                                    {iconName.replace('.webp', '')}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            onClick={handleAdd}
+                            style={{ marginTop: '5px' }}
+                        >
+                            Lägg till
+                        </button>
+                    </div>
+                </Popup>
+            </Marker>
+        )
     }
 
     return (
@@ -124,7 +199,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                 <AddMarkerOnRightClick onAdd={addMarker} />
                 <OSMFetch searchQuery={searchQuery} />
 
-                {/* Olika kartor */}
+                {/* De olika kart lager som finns */}
                 <LayersControl position="topright">
                     <LayersControl.BaseLayer checked name="OpenStreetMap">
                         <TileLayer
@@ -184,7 +259,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 >
                                     <Popup>
                                         <div className={styles.popupContent}>
-                                            {/* Name */}
+                                            {/* Namn */}
                                             <h3>
                                                 {marker.name}
                                                 <button
@@ -193,7 +268,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                     }
                                                     onClick={() => {
                                                         const newName = prompt(
-                                                            'New name:',
+                                                            'Nytt Namn:',
                                                             marker.name
                                                         )
                                                         if (!newName) return
@@ -206,7 +281,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                 </button>
                                             </h3>
 
-                                            {/* Description */}
+                                            {/* Beskrivning */}
                                             <p>
                                                 {marker.popupcontent}
                                                 <button
@@ -215,7 +290,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                     }
                                                     onClick={() => {
                                                         const newDesc = prompt(
-                                                            'New description:',
+                                                            'Ny Beskrivning:',
                                                             marker.popupcontent
                                                         )
                                                         if (!newDesc) return
@@ -229,7 +304,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                 </button>
                                             </p>
 
-                                            {/* Score */}
+                                            {/*  Betyg */}
                                             <div
                                                 style={{
                                                     display: 'flex',
@@ -250,7 +325,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                     }
                                                     onClick={() => {
                                                         const newScore = prompt(
-                                                            'Enter new score (1-5):',
+                                                            'Nytt betyg (1-5):',
                                                             marker.score || 0
                                                         )
                                                         if (!newScore) return
@@ -265,29 +340,44 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                 </button>
                                             </div>
 
-                                            {/* Icon */}
-                                            <div style={{ marginTop: '5px' }}>
-                                                Icon: {marker.icon || 'default'}
-                                                <button
-                                                    className={
-                                                        styles.popupEditButton
+                                            {/* Ikon */}
+                                            <div
+                                                style={{
+                                                    marginTop: '5px',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: '5px'
+                                                }}
+                                            >
+                                                <span>Ikon:</span>
+                                                <select
+                                                    value={
+                                                        marker.icon ||
+                                                        'location.webp'
                                                     }
-                                                    onClick={() => {
-                                                        const newIcon = prompt(
-                                                            'Enter new icon filename (swim.webp, boat.webp, etc.):',
-                                                            marker.icon || ''
-                                                        )
-                                                        if (!newIcon) return
+                                                    onChange={(e) =>
                                                         editMarker(marker.id, {
-                                                            icon: newIcon
+                                                            icon: e.target.value
                                                         })
-                                                    }}
+                                                    }
                                                 >
-                                                    ✎
-                                                </button>
+                                                    {availableIcons.map(
+                                                        (iconName) => (
+                                                            <option
+                                                                key={iconName}
+                                                                value={iconName}
+                                                            >
+                                                                {iconName.replace(
+                                                                    '.webp',
+                                                                    ''
+                                                                )}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
                                             </div>
 
-                                            {/* Delete */}
+                                            {/* Ta bort */}
                                             <button
                                                 className={
                                                     styles.popupDeleteButton

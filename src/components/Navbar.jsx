@@ -36,13 +36,13 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                     >
                         {/* Alla kategorier */}
                         <option value="all">Alla</option>
-                        <option value="/img/boat.webp">Båt</option>
-                        <option value="/img/food.webp">Mat</option>
-                        <option value="/img/swim.webp">Simmning</option>
-                        <option value="/img/kayak.webp">Kayak</option>
-                        <option value="/img/historic.webp">Historiskt</option>
-                        <option value="/img/nature.webp">Natur</option>
-                        <option value="/img/parking.webp">Parkering</option>
+                        <option value="boat.webp">Båt</option>
+                        <option value="food.webp">Mat</option>
+                        <option value="swim.webp">Simmning</option>
+                        <option value="kayak.webp">Kayak</option>
+                        <option value="historic.webp">Historiskt</option>
+                        <option value="nature.webp">Natur</option>
+                        <option value="parking.webp">Parkering</option>
                     </select>
                 </div>
                 {/* Sök */}
