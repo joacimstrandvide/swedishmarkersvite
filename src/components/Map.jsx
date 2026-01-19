@@ -124,15 +124,9 @@ function MapPart({ selectedCategory, searchQuery }) {
                 }
             >
                 <Popup onClose={() => setNewMarker(null)}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '5px',
-                            minWidth: '150px'
-                        }}
-                    >
+                    <div className={styles.popupForm}>
                         <input
+                            className={styles.popupInput}
                             type="text"
                             placeholder="Namn"
                             value={newMarker.name}
@@ -143,7 +137,9 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 })
                             }
                         />
+
                         <textarea
+                            className={styles.popupTextarea}
                             placeholder="Beskrivning"
                             value={newMarker.popupcontent}
                             onChange={(e) =>
@@ -153,7 +149,9 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 })
                             }
                         />
+
                         <input
+                            className={styles.popupInput}
                             type="number"
                             placeholder="Betyg (1-5)"
                             min={0}
@@ -166,7 +164,9 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 })
                             }
                         />
+
                         <select
+                            className={styles.popupSelect}
                             value={newMarker.icon}
                             onChange={(e) =>
                                 setNewMarker({
@@ -181,11 +181,12 @@ function MapPart({ selectedCategory, searchQuery }) {
                                 </option>
                             ))}
                         </select>
+
                         <button
+                            className={styles.popupButton}
                             onClick={handleAdd}
-                            style={{ marginTop: '5px' }}
                         >
-                            Lägg till
+                            Skapa Ny
                         </button>
                     </div>
                 </Popup>
@@ -312,7 +313,7 @@ function MapPart({ selectedCategory, searchQuery }) {
                                                     gap: '5px'
                                                 }}
                                             >
-                                                Score:
+                                                Betyg:
                                                 <Rating
                                                     name={`rating-${marker.id}`}
                                                     value={marker.score || 0}
@@ -341,16 +342,12 @@ function MapPart({ selectedCategory, searchQuery }) {
                                             </div>
 
                                             {/* Ikon */}
-                                            <div
-                                                style={{
-                                                    marginTop: '5px',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '5px'
-                                                }}
-                                            >
+                                            <div>
                                                 <span>Ikon:</span>
                                                 <select
+                                                    className={
+                                                        styles.popupIconSelect
+                                                    }
                                                     value={
                                                         marker.icon ||
                                                         'location.webp'
