@@ -19,6 +19,9 @@ import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 // Sök funktionen
 import OSMFetch from './OSMFetch'
+// Popup komponent
+import MarkerPopup from './MarkerPopup'
+
 import L from 'leaflet'
 // Ikonen när man söker
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
@@ -258,134 +261,17 @@ function MapPart({ selectedCategory, searchQuery }) {
                                         (markerRefs.current[marker.id] = ref)
                                     }
                                 >
-                                    <Popup>
-                                        <div className={styles.popupContent}>
-                                            {/* Namn */}
-                                            <h3>
-                                                {marker.name}
-                                                <button
-                                                    className={
-                                                        styles.popupEditButton
-                                                    }
-                                                    onClick={() => {
-                                                        const newName = prompt(
-                                                            'Nytt Namn:',
-                                                            marker.name
-                                                        )
-                                                        if (!newName) return
-                                                        editMarker(marker.id, {
-                                                            name: newName
-                                                        })
-                                                    }}
-                                                >
-                                                    ✎
-                                                </button>
-                                            </h3>
-
-                                            {/* Beskrivning */}
-                                            <p>
-                                                {marker.popupcontent}
-                                                <button
-                                                    className={
-                                                        styles.popupEditButton
-                                                    }
-                                                    onClick={() => {
-                                                        const newDesc = prompt(
-                                                            'Ny Beskrivning:',
-                                                            marker.popupcontent
-                                                        )
-                                                        if (!newDesc) return
-                                                        editMarker(marker.id, {
-                                                            popupcontent:
-                                                                newDesc
-                                                        })
-                                                    }}
-                                                >
-                                                    ✎
-                                                </button>
-                                            </p>
-
-                                            {/*  Betyg */}
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: '5px'
-                                                }}
-                                            >
-                                                Betyg:
-                                                <Rating
-                                                    name={`rating-${marker.id}`}
-                                                    value={marker.score || 0}
-                                                    precision={0.5}
-                                                    readOnly
-                                                />
-                                                <button
-                                                    className={
-                                                        styles.popupEditButton
-                                                    }
-                                                    onClick={() => {
-                                                        const newScore = prompt(
-                                                            'Nytt betyg (1-5):',
-                                                            marker.score || 0
-                                                        )
-                                                        if (!newScore) return
-                                                        editMarker(marker.id, {
-                                                            score: Number(
-                                                                newScore
-                                                            )
-                                                        })
-                                                    }}
-                                                >
-                                                    ✎
-                                                </button>
-                                            </div>
-
-                                            {/* Ikon */}
-                                            <div>
-                                                <span>Ikon:</span>
-                                                <select
-                                                    className={
-                                                        styles.popupIconSelect
-                                                    }
-                                                    value={
-                                                        marker.icon ||
-                                                        'location.webp'
-                                                    }
-                                                    onChange={(e) =>
-                                                        editMarker(marker.id, {
-                                                            icon: e.target.value
-                                                        })
-                                                    }
-                                                >
-                                                    {availableIcons.map(
-                                                        (iconName) => (
-                                                            <option
-                                                                key={iconName}
-                                                                value={iconName}
-                                                            >
-                                                                {iconName.replace(
-                                                                    '.webp',
-                                                                    ''
-                                                                )}
-                                                            </option>
-                                                        )
-                                                    )}
-                                                </select>
-                                            </div>
-
-                                            {/* Ta bort */}
-                                            <button
-                                                className={
-                                                    styles.popupDeleteButton
-                                                }
-                                                onClick={() =>
-                                                    deleteMarker(marker.id)
-                                                }
-                                            >
-                                                Ta bort
-                                            </button>
-                                        </div>
+                                    <Popup
+                                        closeOnClick={false}
+                                        autoClose={false}
+                                    >
+                                        {/* All data i popupen */}
+                                        <MarkerPopup
+                                            marker={marker}
+                                            editMarker={editMarker}
+                                            deleteMarker={deleteMarker}
+                                            availableIcons={availableIcons}
+                                        />
                                     </Popup>
                                 </Marker>
                             )

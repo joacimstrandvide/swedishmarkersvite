@@ -8,7 +8,7 @@
 
 /* Redigera knapparna */
 .popupEditButton {
-    font-size: 1rem;
+    font-size: .8rem;
     margin-left: 0.5rem;
     cursor: pointer;
     background: none;
@@ -110,4 +110,31 @@
 
 .popupButton:active {
     transform: scale(0.98);
+}
+
+.popupHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.popupDescription {
+    margin: 0.4rem 0 0.6rem;
+    line-height: 1.4;
+}
+
+.inlineTextarea {
+    width: 100%;
+    min-height: 110px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.inlineTextarea:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 1px #4f46e5;
 }
