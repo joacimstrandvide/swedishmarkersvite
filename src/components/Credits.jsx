@@ -55,6 +55,18 @@ function Credits() {
             >
                 Parking sign icons created by SyafriStudio - Flaticon
             </a>
+            <a
+                href="https://www.flaticon.com/free-icons/dock"
+                title="dock icons"
+            >
+                Dock icons created by Freepik - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/bunker"
+                title="bunker icons"
+            >
+                Bunker icons created by Assia Benkerroum - Flaticon
+            </a>
         </section>
     )
 }

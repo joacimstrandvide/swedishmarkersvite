@@ -38,6 +38,7 @@ L.Icon.Default.mergeOptions({
 
 // De ikoner som finns
 const availableIcons = [
+    'location.webp', // standard
     'swim.webp',
     'boat.webp',
     'food.webp',
@@ -45,7 +46,8 @@ const availableIcons = [
     'nature.webp',
     'parking.webp',
     'historic.webp',
-    'location.webp' // standard
+    'bunker.webp',
+    'pier.webp'
 ]
 
 function MapPart({ selectedCategory, searchQuery }) {
