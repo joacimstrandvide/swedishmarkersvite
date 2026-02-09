@@ -1,8 +1,9 @@
 .searchBar {
+    display: flex;
     background: white;
     border-radius: 1rem;
     margin: 1rem;
-    width: 12rem;
+    padding: 2rem;
     padding: 0.25rem 0.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
     transition: box-shadow 0.2s ease;

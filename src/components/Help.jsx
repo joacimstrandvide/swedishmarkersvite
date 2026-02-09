@@ -3,6 +3,10 @@ import styles from './Help.module.css'
 function Help() {
     return (
         <section className={styles.helpContainer}>
+            {/* Titel */}
+            <h1 className={styles.title}>
+                Swedish<strong>Markers</strong>
+            </h1>
             <h2>Hjälp</h2>
             <p>
                 På den här sidan kan du hitta olika intressanta platser runtom i

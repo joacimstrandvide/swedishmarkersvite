@@ -2,6 +2,8 @@
 import { ref, onValue, push, update, remove } from 'firebase/database'
 import { db } from '../firebase'
 import { useState, useEffect, useRef } from 'react'
+import { signInAnonymously, onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../firebase'
 // CSS
 import styles from './Map.module.css'
 import Rating from '@mui/material/Rating'
@@ -55,21 +57,41 @@ function MapPart({ selectedCategory, searchQuery }) {
     const markerRefs = useRef({})
     const base = import.meta.env.BASE_URL
 
+    /* Anonym auth */
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                signInAnonymously(auth).catch(console.error)
+            }
+        })
+
+        return () => unsubscribe()
+    }, [])
+
     // Hämtar alla platser
     useEffect(() => {
-        const markersRef = ref(db, 'markers')
-        onValue(markersRef, (snapshot) => {
-            const markers = snapshot.val()
-            if (!markers) {
-                setData([])
-                return
-            }
-            const formatted = Object.entries(markers).map(([id, marker]) => ({
-                id,
-                ...marker
-            }))
-            setData(formatted)
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (!user) return
+
+            const markersRef = ref(db, 'markers')
+            onValue(markersRef, (snapshot) => {
+                const markers = snapshot.val()
+                if (!markers) {
+                    setData([])
+                    return
+                }
+
+                const formatted = Object.entries(markers).map(
+                    ([id, marker]) => ({
+                        id,
+                        ...marker
+                    })
+                )
+                setData(formatted)
+            })
         })
+
+        return () => unsubscribe()
     }, [])
 
     // CRUD-funktioner

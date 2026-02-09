@@ -17,3 +17,16 @@
     text-decoration: none;
     font-weight: 600;
 }
+
+.title {
+    color: #006aa7;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.8rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.title strong {
+    color: #fecc02;
+    font-family: 'Oswald', sans-serif;
+}

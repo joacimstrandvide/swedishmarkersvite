@@ -8,7 +8,6 @@ export default function OSMSearchBar({ onSearch }) {
         e.preventDefault()
         if (searchTerm.trim() !== '') {
             onSearch(searchTerm.trim().toLowerCase())
-            setDropdownVisible(false)
         }
     }
 
@@ -18,7 +17,6 @@ export default function OSMSearchBar({ onSearch }) {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    onFocus={() => setDropdownVisible(true)}
                     placeholder="Sök..."
                 />
                 <button type="submit">Sök</button>
