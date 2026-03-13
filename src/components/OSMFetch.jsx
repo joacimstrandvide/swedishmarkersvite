@@ -12,6 +12,7 @@ export default function OsmFetcher({ searchQuery }) {
     useEffect(() => {
         if (!searchQuery || !map) return
 
+        /* Hämta bara från det område som syns på skärmen */
         const fetchOsmByBounds = async (theme) => {
             const bounds = map.getBounds()
             const south = bounds.getSouth()
@@ -21,6 +22,7 @@ export default function OsmFetcher({ searchQuery }) {
 
             setLoading(true)
 
+            /* Overpass query */
             const query = `
 [out:json][timeout:15];
 (
@@ -46,6 +48,7 @@ out center qt;
                     })
                     .filter(Boolean)
 
+                /* Skapa ett område där alla ikoner får plats */
                 if (locations.length > 0) {
                     const resultBounds = L.latLngBounds(locations)
                     map.fitBounds(resultBounds)
@@ -69,8 +72,8 @@ out center qt;
                     el.lat && el.lon
                         ? [el.lat, el.lon]
                         : el.center
-                        ? [el.center.lat, el.center.lon]
-                        : null
+                          ? [el.center.lat, el.center.lon]
+                          : null
 
                 if (!position) return null
 

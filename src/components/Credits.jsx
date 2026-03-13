@@ -67,6 +67,42 @@ function Credits() {
             >
                 Bunker icons created by Assia Benkerroum - Flaticon
             </a>
+            <a
+                href="https://www.flaticon.com/free-icons/spa-and-relax"
+                title="spa and relax icons"
+            >
+                Spa and relax icons created by Freepik - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/lighthouse"
+                title="lighthouse icons"
+            >
+                Lighthouse icons created by BZZRINCANTATION - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/church"
+                title="church icons"
+            >
+                Church icons created by ultimatearm - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/potato"
+                title="potato icons"
+            >
+                Potato icons created by RIkas Dzihab - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/dolphin"
+                title="dolphin icons"
+            >
+                Dolphin icons created by Freepik - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/amusement-park"
+                title="amusement park icons"
+            >
+                Amusement park icons created by Freepik - Flaticon
+            </a>
         </section>
     )
 }

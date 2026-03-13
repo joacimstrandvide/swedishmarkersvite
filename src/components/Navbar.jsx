@@ -29,6 +29,12 @@ function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
                         <option value="parking.webp">Parkering</option>
                         <option value="pier.webp">Brygga</option>
                         <option value="bunker.webp">Militärt</option>
+                        <option value="spa.webp">Spa</option>
+                        <option value="church.webp">Kyrka</option>
+                        <option value="lighthouse.webp">Fyr</option>
+                        <option value="potato.webp">Potatis</option>
+                        <option value="animal.webp">Djur</option>
+                        <option value="theme-park.webp">Park</option>
                     </select>
                 </div>
 

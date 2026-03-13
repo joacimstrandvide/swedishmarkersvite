@@ -49,7 +49,14 @@ const availableIcons = [
     'parking.webp',
     'historic.webp',
     'bunker.webp',
-    'pier.webp'
+    'pier.webp',
+    'spa.webp',
+    'church.webp',
+    'lighthouse.webp',
+    'potato.webp',
+    'animal.webp',
+    'theme-park.webp'
+
 ]
 
 function MapPart({ selectedCategory, searchQuery }) {
