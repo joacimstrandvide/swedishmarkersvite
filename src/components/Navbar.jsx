@@ -1,46 +1,63 @@
-// Popup fönster
+import { useState } from 'react'
+/* Popup fönstret */
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
-// Komponenter
+/* Komponenter */
 import Credits from './Credits'
 import Help from './Help'
 import styles from './Navbar.module.css'
-import SearchBar from './Searchbar'
+
+/* Kategorier */
+const categories = [
+    { value: 'all', label: 'Allt' },
+    { value: 'boat.webp', label: 'Båt' },
+    { value: 'food.webp', label: 'Mat' },
+    { value: 'swim.webp', label: 'Simmning' },
+    { value: 'kayak.webp', label: 'Kayak' },
+    { value: 'historic.webp', label: 'Historiskt' },
+    { value: 'nature.webp', label: 'Natur' },
+    { value: 'parking.webp', label: 'Parkering' },
+    { value: 'pier.webp', label: 'Brygga' },
+    { value: 'bunker.webp', label: 'Militärt' },
+    { value: 'spa.webp', label: 'Spa' },
+    { value: 'church.webp', label: 'Kyrka' },
+    { value: 'lighthouse.webp', label: 'Fyr' },
+    { value: 'potato.webp', label: 'Potatis' },
+    { value: 'animal.webp', label: 'Djur' },
+    { value: 'theme-park.webp', label: 'Park' }
+]
 
 function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
+    const [open, setOpen] = useState(false)
+    const selected = categories.find((c) => c.value === selectedCategory)
+
     return (
         <nav className={styles.navbar}>
             <div className={styles.controls}>
                 {/* Filtrering */}
                 <div className={styles.filter}>
-                    <select
-                        id="category"
-                        value={selectedCategory}
-                        onChange={(e) => onCategoryChange(e.target.value)}
+                    <div
+                        className={styles.customSelect}
+                        onClick={() => setOpen((o) => !o)}
                     >
-                        {/* Alla kategorier */}
-                        <option value="all">Allt</option>
-                        <option value="boat.webp">Båt</option>
-                        <option value="food.webp">Mat</option>
-                        <option value="swim.webp">Simmning</option>
-                        <option value="kayak.webp">Kayak</option>
-                        <option value="historic.webp">Historiskt</option>
-                        <option value="nature.webp">Natur</option>
-                        <option value="parking.webp">Parkering</option>
-                        <option value="pier.webp">Brygga</option>
-                        <option value="bunker.webp">Militärt</option>
-                        <option value="spa.webp">Spa</option>
-                        <option value="church.webp">Kyrka</option>
-                        <option value="lighthouse.webp">Fyr</option>
-                        <option value="potato.webp">Potatis</option>
-                        <option value="animal.webp">Djur</option>
-                        <option value="theme-park.webp">Park</option>
-                    </select>
-                </div>
-
-                {/* Sök */}
-                <div className={styles.searchWrapper}>
-                    <SearchBar onSearch={onSearch} />
+                        <span>{selected?.label ?? 'Allt'}</span>
+                    </div>
+                    {open && (
+                        <div className={styles.dropdown}>
+                            {categories.map((cat) => (
+                                <div
+                                    key={cat.value}
+                                    className={`${styles.option} ${selectedCategory === cat.value ? styles.optionActive : ''}`}
+                                    onClick={() => {
+                                        onCategoryChange(cat.value)
+                                        setOpen(false)
+                                    }}
+                                >
+                                    {cat.label}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.buttons}>

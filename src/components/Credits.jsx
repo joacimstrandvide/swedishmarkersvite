@@ -103,6 +103,12 @@ function Credits() {
             >
                 Amusement park icons created by Freepik - Flaticon
             </a>
+            <a
+                href="https://www.flaticon.com/free-icons/shipwreck"
+                title="shipwreck icons"
+            >
+                Shipwreck icons created by Freepik - Flaticon
+            </a>
         </section>
     )
 }

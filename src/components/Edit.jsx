@@ -12,8 +12,9 @@ export default function InlineEdit({
     const [draft, setDraft] = useState(value)
 
     useEffect(() => {
-        setDraft(value)
-    }, [value])
+        // Skriv inte över en pågående redigering
+        if (!editing) setDraft(value)
+    }, [value, editing])
 
     useEffect(() => {
         if (!editing) return
@@ -22,10 +23,15 @@ export default function InlineEdit({
             if (draft !== value) {
                 onSave(draft)
             }
-        }, 400)
+        }, 500)
 
         return () => clearTimeout(timeout)
-    }, [draft, editing])
+    }, [draft, editing, value, onSave])
+
+    const handleBlur = () => {
+        if (draft !== value) onSave(draft)
+        setEditing(false)
+    }
 
     if (disabled || !editing) {
         return (
@@ -45,7 +51,7 @@ export default function InlineEdit({
                 autoFocus
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
-                onBlur={() => setEditing(false)}
+                onBlur={handleBlur}
                 className="inlineTextarea"
             />
         )
@@ -57,7 +63,7 @@ export default function InlineEdit({
             type="text"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            onBlur={() => setEditing(false)}
+            onBlur={handleBlur}
             className="inlineInput"
         />
     )

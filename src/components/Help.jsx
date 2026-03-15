@@ -5,9 +5,8 @@ function Help() {
         <section className={styles.helpContainer}>
             {/* Titel */}
             <h1 className={styles.title}>
-                Swedish<strong>Markers</strong>
+                Swedish<strong>Markers</strong> - Hjälp
             </h1>
-            <h2>Hjälp</h2>
             <p>
                 På den här sidan kan du hitta olika intressanta platser runtom i
                 Sverige. Du kan själv lägga till, redigera eller ta bort.
@@ -17,12 +16,7 @@ function Help() {
             </p>
             <p>
                 Du kan filtrera platserna på kartan efter olika kategorier genom
-                att öppna menyn.
-            </p>
-            <p>
-                Du kan också söka efter specifika termer som "restaurant" för
-                att visa relevanta resultat inom det område som visas på kartan.
-                Informationen hämtas genom overpass med openstreetmap.
+                att klicka på menyn i hörnet.
             </p>
             <a
                 href="https://www.strandvide.se"

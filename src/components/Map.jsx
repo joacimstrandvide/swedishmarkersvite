@@ -19,8 +19,6 @@ import {
 } from 'react-leaflet'
 import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-// Sök funktionen
-import OSMFetch from './OSMFetch'
 // Popup komponent
 import MarkerPopup from './MarkerPopup'
 
@@ -39,7 +37,7 @@ L.Icon.Default.mergeOptions({
 })
 
 // De ikoner som finns
-const availableIcons = [
+export const availableIcons = [
     'location.webp', // standard
     'swim.webp',
     'boat.webp',
@@ -56,183 +54,157 @@ const availableIcons = [
     'potato.webp',
     'animal.webp',
     'theme-park.webp'
-
 ]
 
-function MapPart({ selectedCategory, searchQuery }) {
+// Lägg till ny plats med höger klick, utanför MapPart så den inte återskapas vid varje render
+function AddMarkerOnRightClick({ onAdd, base }) {
+    const [newMarker, setNewMarker] = useState(null)
+
+    useMapEvents({
+        contextmenu: (e) => {
+            setNewMarker({
+                lat: e.latlng.lat,
+                lng: e.latlng.lng,
+                name: '',
+                popupcontent: '',
+                score: 0,
+                icon: 'location.webp' /* Standard ikonen */
+            })
+        }
+    })
+
+    const handleAdd = () => {
+        if (!newMarker.name) return
+        onAdd({ ...newMarker, score: Number(newMarker.score) })
+        setNewMarker(null)
+    }
+
+    if (!newMarker) return null
+
+    return (
+        <Marker
+            position={[newMarker.lat, newMarker.lng]}
+            icon={
+                new Icon({
+                    iconUrl: `${base}/img/${newMarker.icon}`,
+                    iconSize: [30, 30]
+                })
+            }
+        >
+            <Popup onClose={() => setNewMarker(null)}>
+                <div className={styles.popupForm}>
+                    <input
+                        className={styles.popupInput}
+                        type="text"
+                        placeholder="Namn"
+                        value={newMarker.name}
+                        onChange={(e) =>
+                            setNewMarker({ ...newMarker, name: e.target.value })
+                        }
+                    />
+                    <textarea
+                        className={styles.popupTextarea}
+                        placeholder="Beskrivning"
+                        value={newMarker.popupcontent}
+                        onChange={(e) =>
+                            setNewMarker({
+                                ...newMarker,
+                                popupcontent: e.target.value
+                            })
+                        }
+                    />
+                    <input
+                        className={styles.popupInput}
+                        type="number"
+                        placeholder="Betyg (1-5)"
+                        min={0}
+                        max={5}
+                        value={newMarker.score}
+                        onChange={(e) =>
+                            setNewMarker({
+                                ...newMarker,
+                                score: e.target.value
+                            })
+                        }
+                    />
+                    <select
+                        className={styles.popupSelect}
+                        value={newMarker.icon}
+                        onChange={(e) =>
+                            setNewMarker({ ...newMarker, icon: e.target.value })
+                        }
+                    >
+                        {availableIcons.map((iconName) => (
+                            <option key={iconName} value={iconName}>
+                                {iconName.replace('.webp', '')}
+                            </option>
+                        ))}
+                    </select>
+                    <button className={styles.popupButton} onClick={handleAdd}>
+                        Skapa Ny
+                    </button>
+                </div>
+            </Popup>
+        </Marker>
+    )
+}
+
+function MapPart({ selectedCategory }) {
     const [data, setData] = useState([])
+    const [userId, setUserId] = useState(null)
     const markerRefs = useRef({})
     const base = import.meta.env.BASE_URL
 
     /* Anonym auth */
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (!user) {
+        const unsub = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserId(user.uid)
+            } else {
                 signInAnonymously(auth).catch(console.error)
             }
         })
-
-        return () => unsubscribe()
+        return () => unsub()
     }, [])
 
     // Hämtar alla platser
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (!user) return
-
-            const markersRef = ref(db, 'markers')
-            onValue(markersRef, (snapshot) => {
-                const markers = snapshot.val()
-                if (!markers) {
-                    setData([])
-                    return
-                }
-
-                const formatted = Object.entries(markers).map(
-                    ([id, marker]) => ({
-                        id,
-                        ...marker
-                    })
-                )
-                setData(formatted)
-            })
+        if (!userId) return
+        const markersRef = ref(db, 'markers')
+        const unsub = onValue(markersRef, (snapshot) => {
+            const markers = snapshot.val()
+            if (!markers) {
+                setData([])
+                return
+            }
+            setData(Object.entries(markers).map(([id, m]) => ({ id, ...m })))
         })
+        return () => unsub()
+    }, [userId])
 
-        return () => unsubscribe()
-    }, [])
-
-    // CRUD-funktioner
+    // CRUD funktioner
     const addMarker = (marker) => push(ref(db, 'markers'), marker)
-    const editMarker = (id, updatedFields) =>
-        update(ref(db, `markers/${id}`), updatedFields)
+    const editMarker = (id, fields) => update(ref(db, `markers/${id}`), fields)
     const deleteMarker = (id) => remove(ref(db, `markers/${id}`))
 
     // Kluster ikon
-    const createClusterIcon = (cluster) => {
-        return new divIcon({
+    const createClusterIcon = (cluster) =>
+        new divIcon({
             html: `<div class="circle">${cluster.getChildCount()}</div>`,
             iconSize: [33, 33],
             className: 'custom-cluster-icon'
         })
-    }
 
     // Filtera platser
     const filteredData =
         selectedCategory === 'all'
             ? data
-            : data.filter((marker) => marker.icon === selectedCategory)
-
-    // Lägg till ny plats med höger klick
-    function AddMarkerOnRightClick({ onAdd }) {
-        const [newMarker, setNewMarker] = useState(null)
-
-        useMapEvents({
-            contextmenu: (e) => {
-                setNewMarker({
-                    lat: e.latlng.lat,
-                    lng: e.latlng.lng,
-                    name: '',
-                    popupcontent: '',
-                    score: 0,
-                    icon: 'location.webp' /* Standard ikonen */
-                })
-            }
-        })
-
-        const handleAdd = () => {
-            if (!newMarker.name) return
-            onAdd({ ...newMarker, score: Number(newMarker.score) })
-            setNewMarker(null)
-        }
-
-        if (!newMarker) return null
-
-        return (
-            <Marker
-                position={[newMarker.lat, newMarker.lng]}
-                icon={
-                    new Icon({
-                        iconUrl: `${base}/img/${newMarker.icon}`,
-                        iconSize: [30, 30]
-                    })
-                }
-            >
-                <Popup onClose={() => setNewMarker(null)}>
-                    <div className={styles.popupForm}>
-                        <input
-                            className={styles.popupInput}
-                            type="text"
-                            placeholder="Namn"
-                            value={newMarker.name}
-                            onChange={(e) =>
-                                setNewMarker({
-                                    ...newMarker,
-                                    name: e.target.value
-                                })
-                            }
-                        />
-
-                        <textarea
-                            className={styles.popupTextarea}
-                            placeholder="Beskrivning"
-                            value={newMarker.popupcontent}
-                            onChange={(e) =>
-                                setNewMarker({
-                                    ...newMarker,
-                                    popupcontent: e.target.value
-                                })
-                            }
-                        />
-
-                        <input
-                            className={styles.popupInput}
-                            type="number"
-                            placeholder="Betyg (1-5)"
-                            min={0}
-                            max={5}
-                            value={newMarker.score}
-                            onChange={(e) =>
-                                setNewMarker({
-                                    ...newMarker,
-                                    score: e.target.value
-                                })
-                            }
-                        />
-
-                        <select
-                            className={styles.popupSelect}
-                            value={newMarker.icon}
-                            onChange={(e) =>
-                                setNewMarker({
-                                    ...newMarker,
-                                    icon: e.target.value
-                                })
-                            }
-                        >
-                            {availableIcons.map((iconName) => (
-                                <option key={iconName} value={iconName}>
-                                    {iconName.replace('.webp', '')}
-                                </option>
-                            ))}
-                        </select>
-
-                        <button
-                            className={styles.popupButton}
-                            onClick={handleAdd}
-                        >
-                            Skapa Ny
-                        </button>
-                    </div>
-                </Popup>
-            </Marker>
-        )
-    }
+            : data.filter((m) => m.icon === selectedCategory)
 
     return (
         <div style={{ position: 'relative' }}>
             <MapContainer center={[59.4036, 18.3297]} zoom={11}>
-                <AddMarkerOnRightClick onAdd={addMarker} />
-                <OSMFetch searchQuery={searchQuery} />
+                <AddMarkerOnRightClick onAdd={addMarker} base={base} />
 
                 {/* De olika kart lager som finns */}
                 <LayersControl position="topright">
@@ -242,28 +214,24 @@ function MapPart({ selectedCategory, searchQuery }) {
                             url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
                     </LayersControl.BaseLayer>
-
                     <LayersControl.BaseLayer name="Esri World Imagery">
                         <TileLayer
                             attribution="Tiles &copy; Esri &mdash; Source: Esri, ..."
                             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                         />
                     </LayersControl.BaseLayer>
-
                     <LayersControl.BaseLayer name="CartoDB Positron">
                         <TileLayer
                             attribution='&copy; <a href="https://carto.com/">CARTO</a>'
                             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                         />
                     </LayersControl.BaseLayer>
-
                     <LayersControl.BaseLayer name="OpenTopoMap">
                         <TileLayer
                             attribution='Map data: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
                             url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
                         />
                     </LayersControl.BaseLayer>
-
                     <LayersControl.Overlay name="OpenSeaMap Nautical">
                         <TileLayer
                             attribution='Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'
@@ -275,38 +243,32 @@ function MapPart({ selectedCategory, searchQuery }) {
                         chunkedLoading
                         iconCreateFunction={createClusterIcon}
                     >
-                        {filteredData.map((marker) => {
-                            const markerIconObj = new Icon({
-                                iconUrl: marker.icon
-                                    ? `${base}/img/${marker.icon}`
-                                    : `${base}/img/location.webp`,
-                                iconSize: [30, 30]
-                            })
-
-                            return (
-                                <Marker
-                                    key={marker.id}
-                                    position={[marker.lat, marker.lng]}
-                                    icon={markerIconObj}
-                                    ref={(ref) =>
-                                        (markerRefs.current[marker.id] = ref)
-                                    }
-                                >
-                                    <Popup
-                                        closeOnClick={false}
-                                        autoClose={false}
-                                    >
-                                        {/* All data i popupen */}
-                                        <MarkerPopup
-                                            marker={marker}
-                                            editMarker={editMarker}
-                                            deleteMarker={deleteMarker}
-                                            availableIcons={availableIcons}
-                                        />
-                                    </Popup>
-                                </Marker>
-                            )
-                        })}
+                        {filteredData.map((marker) => (
+                            <Marker
+                                key={marker.id}
+                                position={[marker.lat, marker.lng]}
+                                icon={
+                                    new Icon({
+                                        iconUrl: marker.icon
+                                            ? `${base}/img/${marker.icon}`
+                                            : `${base}/img/location.webp`,
+                                        iconSize: [30, 30]
+                                    })
+                                }
+                                ref={(r) => (markerRefs.current[marker.id] = r)}
+                            >
+                                <Popup closeOnClick={false} autoClose={false}>
+                                    {/* All data i popupen */}
+                                    <MarkerPopup
+                                        marker={marker}
+                                        userId={userId}
+                                        editMarker={editMarker}
+                                        deleteMarker={deleteMarker}
+                                        availableIcons={availableIcons}
+                                    />
+                                </Popup>
+                            </Marker>
+                        ))}
                     </MarkerClusterGroup>
                 </LayersControl>
             </MapContainer>

@@ -1,15 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Rating from '@mui/material/Rating'
+// Redigera
 import InlineEdit from './Edit'
 import styles from './Map.module.css'
 
 export default function MarkerPopup({
     marker,
+    userId,
     editMarker,
     deleteMarker,
     availableIcons
 }) {
+    // Om någon annan redigerar samtidigt
+    const isLockedByOther = marker.editingBy && marker.editingBy !== userId
     const [isEditing, setIsEditing] = useState(false)
+
+    useEffect(() => {
+        if (marker.editingBy !== userId) setIsEditing(false)
+    }, [marker.editingBy, userId])
+
+    const startEditing = () => {
+        if (isLockedByOther) return
+        editMarker(marker.id, { editingBy: userId })
+        setIsEditing(true)
+    }
+
+    const stopEditing = () => {
+        editMarker(marker.id, { editingBy: null })
+        setIsEditing(false)
+    }
 
     return (
         <div className={styles.popupContent}>
@@ -24,12 +43,18 @@ export default function MarkerPopup({
                     />
                 </h3>
 
-                <button
-                    className={styles.popupEditButton}
-                    onClick={() => setIsEditing((prev) => !prev)}
-                >
-                    {isEditing ? '✓ Spara' : '✎ Redigera'}
-                </button>
+                {isLockedByOther ? (
+                    <span className={styles.popupLocked}>
+                        Redigeras redan...
+                    </span>
+                ) : (
+                    <button
+                        className={styles.popupEditButton}
+                        onClick={isEditing ? stopEditing : startEditing}
+                    >
+                        {isEditing ? 'Spara' : 'Redigera'}
+                    </button>
+                )}
             </div>
 
             {/* Beskrivning */}
@@ -60,9 +85,7 @@ export default function MarkerPopup({
                         className={styles.popupIconSelect}
                         value={marker.icon || 'location.webp'}
                         onChange={(e) =>
-                            editMarker(marker.id, {
-                                icon: e.target.value
-                            })
+                            editMarker(marker.id, { icon: e.target.value })
                         }
                     >
                         {availableIcons.map((icon) => (

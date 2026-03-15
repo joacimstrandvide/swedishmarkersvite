@@ -18,46 +18,65 @@
 }
 
 .filter {
+    position: relative;
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
 }
 
-.filter select {
+.customSelect {
     font-family: 'Oswald', sans-serif;
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
     border: 2px solid #006aa7;
     border-radius: 0.5rem;
     background: #f9f9f9;
     color: #222;
-    outline: none;
-    transition: all 0.3s;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    min-width: 120px;
+    user-select: none;
+    transition: all 0.3s;
+}
+
+.customSelect:hover {
+    background: #fff;
+}
+
+.dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    min-width: 100%;
+    max-height: 220px;
     overflow-y: auto;
-}
-
-.filter select:hover {
     background: #fff;
+    border: 2px solid #006aa7;
+    border-radius: 0.5rem;
+    z-index: 999;
+    box-shadow: 0 -4px 12px rgba(0, 106, 167, 0.15);
+    margin-bottom: 4px;
 }
 
-.filter select:focus {
-    border: 2px solid #fecc02;
-    background: #fffbe6;
-}
-
-.filter option {
-    background: #fff;
-    color: #006aa7;
-    font-weight: 500;
+.option {
     font-family: 'Oswald', sans-serif;
     font-size: 1rem;
-    padding: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    color: #006aa7;
+    cursor: pointer;
+    transition: background 0.15s;
 }
 
-.searchWrapper {
-    flex: 1;
-    min-width: 150px;
-    max-width: 300px;
+.option:hover {
+    background: #f0f7ff;
+}
+
+.optionActive {
+    background: #fecc02;
+    color: #006aa7;
+    font-weight: 600;
 }
 
 .buttons {
@@ -89,15 +108,11 @@
     transform: translateY(0);
 }
 
-/* padda */
+/* Padda */
 @media (max-width: 900px) {
     .navbar {
         gap: 1rem;
         padding: 0.75rem 1rem;
-    }
-
-    .searchWrapper {
-        max-width: 200px;
     }
 }
 
@@ -126,17 +141,20 @@
         display: flex;
     }
 
-    .filter select {
+    .customSelect {
         flex: 1;
         width: 100%;
         font-size: 0.9rem;
         padding: 0.6rem 0.4rem;
     }
 
-    .searchWrapper {
-        flex: 1;
-        max-width: none;
-        min-width: 0;
+    .dropdown {
+        max-height: 180px;
+    }
+
+    .option {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.6rem;
     }
 
     .buttons {
