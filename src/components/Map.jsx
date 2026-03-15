@@ -151,9 +151,8 @@ function MapPart({ selectedCategory }) {
         return () => unsub()
     }, [])
 
-    // Hämtar alla platser — tillgängligt för alla, men bara inloggade kan lägga till
+    // Hämtar alla platser, synligt för alla, men bara inloggade kan redigera
     useEffect(() => {
-        if (authLoading) return
         const markersRef = ref(db, 'markers')
         const unsub = onValue(markersRef, (snapshot) => {
             const markers = snapshot.val()
@@ -164,7 +163,7 @@ function MapPart({ selectedCategory }) {
             setData(Object.entries(markers).map(([id, m]) => ({ id, ...m })))
         })
         return () => unsub()
-    }, [authLoading])
+    }, [])
 
     const addMarker = (marker) => {
         if (!currentUser) return

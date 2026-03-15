@@ -8,8 +8,8 @@ A React interactive map for exploring unique points of interest across mainly Sw
 
 - Interactive map powered by Leaflet
 - Clustered markers for a clean browsing experience
-- Anonymous authentication via Firebase
-- Real-time data storage with Firebase Realtime Database
+- Email authentication via Firebase
+- Real time data storage with Firebase Realtime Database
 
 ## Tech Stack
 

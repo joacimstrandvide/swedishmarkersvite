@@ -11,7 +11,7 @@ import styles from './Login.module.css'
 
 export default function Login() {
     const [currentUser, setCurrentUser] = useState(null)
-    const [mode, setMode] = useState('login') // 'login' | 'register'
+    const [mode, setMode] = useState('login')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -66,7 +66,7 @@ export default function Login() {
         }
     }
 
-    // Inloggad vy
+    // Inloggad information
     if (currentUser) {
         return (
             <div className={styles.loggedIn}>
