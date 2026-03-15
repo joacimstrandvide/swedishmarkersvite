@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react'
 import Rating from '@mui/material/Rating'
-// Redigera
 import InlineEdit from './Edit'
 import styles from './Map.module.css'
 
 export default function MarkerPopup({
     marker,
-    userId,
+    currentUser,
     editMarker,
     deleteMarker,
     availableIcons
 }) {
-    // Om någon annan redigerar samtidigt
-    const isLockedByOther = marker.editingBy && marker.editingBy !== userId
+    const isOwner = !marker.uid || currentUser?.uid === marker.uid
+    const isLockedByOther =
+        marker.editingBy && marker.editingBy !== currentUser?.uid
     const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
-        if (marker.editingBy !== userId) setIsEditing(false)
-    }, [marker.editingBy, userId])
+        if (marker.editingBy !== currentUser?.uid) setIsEditing(false)
+    }, [marker.editingBy, currentUser])
 
     const startEditing = () => {
-        if (isLockedByOther) return
-        editMarker(marker.id, { editingBy: userId })
+        if (isLockedByOther || !isOwner) return
+        editMarker(marker.id, { editingBy: currentUser.uid })
         setIsEditing(true)
     }
 
@@ -43,18 +43,19 @@ export default function MarkerPopup({
                     />
                 </h3>
 
+                {/* Redigera knapp, bara för ägaren */}
                 {isLockedByOther ? (
                     <span className={styles.popupLocked}>
                         Redigeras redan...
                     </span>
-                ) : (
+                ) : isOwner ? (
                     <button
                         className={styles.popupEditButton}
                         onClick={isEditing ? stopEditing : startEditing}
                     >
                         {isEditing ? 'Spara' : 'Redigera'}
                     </button>
-                )}
+                ) : null}
             </div>
 
             {/* Beskrivning */}
@@ -97,8 +98,13 @@ export default function MarkerPopup({
                 </div>
             )}
 
+            {/* Vem som lade till platsen */}
+            {marker.author && (
+                <p className={styles.popupAuthor}>Skapad av {marker.author}</p>
+            )}
+
             {/* Ta bort */}
-            {isEditing && (
+            {isEditing && isOwner && (
                 <button
                     className={styles.popupDeleteButton}
                     onClick={() => deleteMarker(marker.id)}

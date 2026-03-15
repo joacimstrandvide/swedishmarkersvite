@@ -8,7 +8,7 @@
 
 /* Redigera knapparna */
 .popupEditButton {
-    font-size: .8rem;
+    font-size: 0.8rem;
     margin-left: 0.5rem;
     cursor: pointer;
     background: none;
@@ -137,4 +137,28 @@
 .inlineTextarea:focus {
     border-color: #4f46e5;
     box-shadow: 0 0 0 1px #4f46e5;
+}
+
+.userBar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+    background: #fff;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-size: 0.875rem;
+}
+
+.logoutButton {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
 }

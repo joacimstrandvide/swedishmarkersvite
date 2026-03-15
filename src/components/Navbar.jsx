@@ -5,6 +5,7 @@ import 'reactjs-popup/dist/index.css'
 /* Komponenter */
 import Credits from './Credits'
 import Help from './Help'
+import Login from './Login'
 import styles from './Navbar.module.css'
 
 /* Kategorier */
@@ -64,7 +65,26 @@ function Navbar({ selectedCategory, onCategoryChange }) {
                 </div>
 
                 <div className={styles.buttons}>
-                    {/* Hjälp */}
+                    {/* Inloggning */}
+                    <Popup
+                        trigger={
+                            <button className={styles.button}>Konto</button>
+                        }
+                        modal
+                        nested
+                    >
+                        {(close) => (
+                            <div className="modal">
+                                <button className="close" onClick={close}>
+                                    &times;
+                                </button>
+                                <div className="content">
+                                    <Login />
+                                </div>
+                            </div>
+                        )}
+                    </Popup>
+
                     <Popup
                         trigger={
                             <button className={styles.button}>Hjälp</button>

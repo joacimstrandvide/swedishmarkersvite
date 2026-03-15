@@ -2,7 +2,7 @@
 import { ref, onValue, push, update, remove } from 'firebase/database'
 import { db } from '../firebase'
 import { useState, useEffect, useRef } from 'react'
-import { signInAnonymously, onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../firebase'
 // CSS
 import styles from './Map.module.css'
@@ -21,9 +21,10 @@ import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 // Popup komponent
 import MarkerPopup from './MarkerPopup'
+
 // De ikoner som finns
 export const availableIcons = [
-    'location.webp', // standard
+    'location.webp',
     'swim.webp',
     'boat.webp',
     'food.webp',
@@ -42,9 +43,8 @@ export const availableIcons = [
     'shipwreck.webp'
 ]
 
-// Lägg till ny plats med höger klick, utanför MapPart så den inte återskapas vid varje render
+// Lägg till ny plats med höger klick
 function AddMarkerOnRightClick({ onAdd, base }) {
-    // States
     const [newMarker, setNewMarker] = useState(null)
 
     useMapEvents({
@@ -55,7 +55,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                 name: '',
                 popupcontent: '',
                 score: 0,
-                icon: 'location.webp' /* Standard ikonen */
+                icon: 'location.webp'
             })
         }
     })
@@ -138,25 +138,22 @@ function AddMarkerOnRightClick({ onAdd, base }) {
 
 function MapPart({ selectedCategory }) {
     const [data, setData] = useState([])
-    const [userId, setUserId] = useState(null)
+    const [currentUser, setCurrentUser] = useState(null)
+    const [authLoading, setAuthLoading] = useState(true)
     const markerRefs = useRef({})
     const base = import.meta.env.BASE_URL
 
-    /* Anonym auth */
     useEffect(() => {
         const unsub = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserId(user.uid)
-            } else {
-                signInAnonymously(auth).catch(console.error)
-            }
+            setCurrentUser(user || null)
+            setAuthLoading(false)
         })
         return () => unsub()
     }, [])
 
-    // Hämtar alla platser
+    // Hämtar alla platser — tillgängligt för alla, men bara inloggade kan lägga till
     useEffect(() => {
-        if (!userId) return
+        if (authLoading) return
         const markersRef = ref(db, 'markers')
         const unsub = onValue(markersRef, (snapshot) => {
             const markers = snapshot.val()
@@ -167,14 +164,21 @@ function MapPart({ selectedCategory }) {
             setData(Object.entries(markers).map(([id, m]) => ({ id, ...m })))
         })
         return () => unsub()
-    }, [userId])
+    }, [authLoading])
 
-    // CRUD funktioner
-    const addMarker = (marker) => push(ref(db, 'markers'), marker)
+    const addMarker = (marker) => {
+        if (!currentUser) return
+        push(ref(db, 'markers'), {
+            ...marker,
+            uid: currentUser.uid,
+            author: currentUser.displayName || currentUser.email,
+            createdAt: Date.now()
+        })
+    }
+
     const editMarker = (id, fields) => update(ref(db, `markers/${id}`), fields)
     const deleteMarker = (id) => remove(ref(db, `markers/${id}`))
 
-    // Kluster ikon
     const createClusterIcon = (cluster) =>
         new divIcon({
             html: `<div class="circle">${cluster.getChildCount()}</div>`,
@@ -182,18 +186,21 @@ function MapPart({ selectedCategory }) {
             className: 'custom-cluster-icon'
         })
 
-    // Filtera platser
     const filteredData =
         selectedCategory === 'all'
             ? data
             : data.filter((m) => m.icon === selectedCategory)
 
+    if (authLoading) return null
+
     return (
         <div style={{ position: 'relative' }}>
             <MapContainer center={[59.4036, 18.3297]} zoom={11}>
-                <AddMarkerOnRightClick onAdd={addMarker} base={base} />
+                {/* Bara inloggade kan lägga till markörer */}
+                {currentUser && (
+                    <AddMarkerOnRightClick onAdd={addMarker} base={base} />
+                )}
 
-                {/* De olika kart lager som finns */}
                 <LayersControl position="topright">
                     <LayersControl.BaseLayer checked name="OpenStreetMap">
                         <TileLayer
@@ -245,10 +252,9 @@ function MapPart({ selectedCategory }) {
                                 ref={(r) => (markerRefs.current[marker.id] = r)}
                             >
                                 <Popup closeOnClick={false} autoClose={false}>
-                                    {/* All data i popupen */}
                                     <MarkerPopup
                                         marker={marker}
-                                        userId={userId}
+                                        currentUser={currentUser}
                                         editMarker={editMarker}
                                         deleteMarker={deleteMarker}
                                         availableIcons={availableIcons}
