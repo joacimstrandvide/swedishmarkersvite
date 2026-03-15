@@ -21,21 +21,6 @@ import { Icon, divIcon } from 'leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 // Popup komponent
 import MarkerPopup from './MarkerPopup'
-
-import L from 'leaflet'
-// Ikonen när man söker
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerIcon from 'leaflet/dist/images/marker-icon.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
-
-// Fixar standard ikonen när man söker
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: markerIcon2x,
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow
-})
-
 // De ikoner som finns
 export const availableIcons = [
     'location.webp', // standard
@@ -53,11 +38,13 @@ export const availableIcons = [
     'lighthouse.webp',
     'potato.webp',
     'animal.webp',
-    'theme-park.webp'
+    'theme-park.webp',
+    'shipwreck.webp'
 ]
 
 // Lägg till ny plats med höger klick, utanför MapPart så den inte återskapas vid varje render
 function AddMarkerOnRightClick({ onAdd, base }) {
+    // States
     const [newMarker, setNewMarker] = useState(null)
 
     useMapEvents({

@@ -24,10 +24,13 @@ const categories = [
     { value: 'lighthouse.webp', label: 'Fyr' },
     { value: 'potato.webp', label: 'Potatis' },
     { value: 'animal.webp', label: 'Djur' },
-    { value: 'theme-park.webp', label: 'Park' }
+    { value: 'theme-park.webp', label: 'Nöjespark' },
+    { value: 'shipwreck.webp', label: 'Skeppsbrott' }
 ]
 
-function Navbar({ selectedCategory, onCategoryChange, onSearch }) {
+// Skicka några props
+function Navbar({ selectedCategory, onCategoryChange }) {
+    // States
     const [open, setOpen] = useState(false)
     const selected = categories.find((c) => c.value === selectedCategory)
 
