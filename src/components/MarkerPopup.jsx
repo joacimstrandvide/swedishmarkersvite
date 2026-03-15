@@ -10,7 +10,6 @@ export default function MarkerPopup({
     deleteMarker,
     availableIcons
 }) {
-    const isOwner = !marker.uid || currentUser?.uid === marker.uid
     const isLockedByOther =
         marker.editingBy && marker.editingBy !== currentUser?.uid
     const [isEditing, setIsEditing] = useState(false)
@@ -20,7 +19,7 @@ export default function MarkerPopup({
     }, [marker.editingBy, currentUser])
 
     const startEditing = () => {
-        if (isLockedByOther || !isOwner) return
+        if (isLockedByOther) return
         editMarker(marker.id, { editingBy: currentUser.uid })
         setIsEditing(true)
     }
@@ -48,7 +47,7 @@ export default function MarkerPopup({
                     <span className={styles.popupLocked}>
                         Redigeras redan...
                     </span>
-                ) : isOwner ? (
+                ) : currentUser ? (
                     <button
                         className={styles.popupEditButton}
                         onClick={isEditing ? stopEditing : startEditing}
@@ -104,7 +103,7 @@ export default function MarkerPopup({
             )}
 
             {/* Ta bort */}
-            {isEditing && isOwner && (
+            {isEditing && (
                 <button
                     className={styles.popupDeleteButton}
                     onClick={() => deleteMarker(marker.id)}

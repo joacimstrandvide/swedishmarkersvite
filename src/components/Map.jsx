@@ -195,7 +195,7 @@ function MapPart({ selectedCategory }) {
     return (
         <div style={{ position: 'relative' }}>
             <MapContainer center={[59.4036, 18.3297]} zoom={11}>
-                {/* Bara inloggade kan lägga till markörer */}
+                {/* Bara inloggade kan lägga till platser */}
                 {currentUser && (
                     <AddMarkerOnRightClick onAdd={addMarker} base={base} />
                 )}
