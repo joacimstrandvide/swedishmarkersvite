@@ -40,7 +40,9 @@ export const availableIcons = [
     'potato.webp',
     'animal.webp',
     'theme-park.webp',
-    'shipwreck.webp'
+    'shipwreck.webp',
+    'nuclear.webp',
+    'lake.webp'
 ]
 
 // Lägg till ny plats med höger klick

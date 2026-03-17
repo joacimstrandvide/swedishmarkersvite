@@ -42,7 +42,7 @@ export default function MarkerPopup({
                     />
                 </h3>
 
-                {/* Redigera knapp, bara för ägaren */}
+                {/* Redigera knapp */}
                 {isLockedByOther ? (
                     <span className={styles.popupLocked}>
                         Redigeras redan...

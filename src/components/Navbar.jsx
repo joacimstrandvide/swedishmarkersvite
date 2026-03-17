@@ -26,7 +26,9 @@ const categories = [
     { value: 'potato.webp', label: 'Potatis' },
     { value: 'animal.webp', label: 'Djur' },
     { value: 'theme-park.webp', label: 'Nöjespark' },
-    { value: 'shipwreck.webp', label: 'Skeppsbrott' }
+    { value: 'shipwreck.webp', label: 'Skeppsbrott' },
+    { value: 'nuclear.webp', label: 'Kärnkraft' },
+    { value: 'lake.webp', label: 'Sjö' }
 ]
 
 // Skicka några props

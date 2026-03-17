@@ -109,6 +109,18 @@ function Credits() {
             >
                 Shipwreck icons created by Freepik - Flaticon
             </a>
+            <a
+                href="https://www.flaticon.com/free-icons/nuclear"
+                title="nuclear icons"
+            >
+                Nuclear icons created by srip - Flaticon
+            </a>
+            <a
+                href="https://www.flaticon.com/free-icons/pond"
+                title="pond icons"
+            >
+                Pond icons created by Mihimihi - Flaticon
+            </a>
         </section>
     )
 }
