@@ -97,7 +97,7 @@ export default function MarkerPopup({
                 </div>
             )}
 
-            {/* Vem som lade till platsen */}
+            {/* Vem som skapade platsen */}
             {marker.author && (
                 <p className={styles.popupAuthor}>Skapad av {marker.author}</p>
             )}

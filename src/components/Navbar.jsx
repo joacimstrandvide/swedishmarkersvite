@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Popup from 'reactjs-popup'
 import 'reactjs-popup/dist/index.css'
 /* Komponenter */
-import Credits from './Credits'
 import Help from './Help'
 import Login from './Login'
 import styles from './Navbar.module.css'
@@ -28,7 +27,8 @@ const categories = [
     { value: 'theme-park.webp', label: 'Nöjespark' },
     { value: 'shipwreck.webp', label: 'Skeppsbrott' },
     { value: 'nuclear.webp', label: 'Kärnkraft' },
-    { value: 'lake.webp', label: 'Sjö' }
+    { value: 'lake.webp', label: 'Sjö' },
+    { value: 'battery.webp', label: 'Laddning' }
 ]
 
 // Skicka några props
@@ -101,26 +101,6 @@ function Navbar({ selectedCategory, onCategoryChange }) {
                                 </button>
                                 <div className="content">
                                     <Help />
-                                </div>
-                            </div>
-                        )}
-                    </Popup>
-
-                    {/* Ikoner */}
-                    <Popup
-                        trigger={
-                            <button className={styles.button}>Ikoner</button>
-                        }
-                        modal
-                        nested
-                    >
-                        {(close) => (
-                            <div className="modal">
-                                <button className="close" onClick={close}>
-                                    &times;
-                                </button>
-                                <div className="content">
-                                    <Credits />
                                 </div>
                             </div>
                         )}
