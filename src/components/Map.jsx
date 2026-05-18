@@ -26,6 +26,7 @@ import MarkerPopup from './MarkerPopup'
 export const availableIcons = [
     'location.webp',
     'swim.webp',
+    'beach.webp',
     'boat.webp',
     'food.webp',
     'kayak.webp',
@@ -43,7 +44,8 @@ export const availableIcons = [
     'shipwreck.webp',
     'nuclear.webp',
     'lake.webp',
-    'battery.webp'
+    'battery.webp',
+    'rest.webp'
 ]
 
 // Lägg till ny plats med höger klick
