@@ -27,11 +27,14 @@ export const availableIcons = [
     'location.webp',
     'swim.webp',
     'beach.webp',
+    'view.webp',
     'boat.webp',
     'food.webp',
     'kayak.webp',
     'nature.webp',
     'parking.webp',
+    'rest.webp',
+    'museum.webp',
     'historic.webp',
     'bunker.webp',
     'pier.webp',
@@ -44,8 +47,7 @@ export const availableIcons = [
     'shipwreck.webp',
     'nuclear.webp',
     'lake.webp',
-    'battery.webp',
-    'rest.webp'
+    'battery.webp'
 ]
 
 // Lägg till ny plats med höger klick

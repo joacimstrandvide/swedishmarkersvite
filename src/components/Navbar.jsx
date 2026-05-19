@@ -16,7 +16,9 @@ const categories = [
     { value: 'beach.webp', label: 'Strand' },
     { value: 'kayak.webp', label: 'Kayak' },
     { value: 'historic.webp', label: 'Historiskt' },
+    { value: 'museum.webp', label: 'Museum' },
     { value: 'nature.webp', label: 'Natur' },
+    { value: 'view.webp', label: 'Utsiktsplats' },
     { value: 'rest.webp', label: 'Rastplats' },
     { value: 'parking.webp', label: 'Parkering' },
     { value: 'pier.webp', label: 'Brygga' },
@@ -24,7 +26,7 @@ const categories = [
     { value: 'spa.webp', label: 'Spa' },
     { value: 'church.webp', label: 'Kyrka' },
     { value: 'lighthouse.webp', label: 'Fyr' },
-    { value: 'potato.webp', label: 'Potatis' },
+    { value: 'potato.webp', label: 'Potatis' }, /* Skämt */
     { value: 'animal.webp', label: 'Djur' },
     { value: 'theme-park.webp', label: 'Nöjespark' },
     { value: 'shipwreck.webp', label: 'Skeppsbrott' },
