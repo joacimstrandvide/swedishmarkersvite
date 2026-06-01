@@ -5,25 +5,30 @@ function Help() {
         <section className={styles.helpContainer}>
             {/* Titel */}
             <h1 className={styles.title}>
-                Swedish<strong>Markers</strong> - Hjälp
+                Swedish<strong>Markers</strong> - Help
             </h1>
             <p>
-                På den här sidan kan du hitta olika intressanta platser runtom i
-                Sverige. Om du är inloggad kan du lägga till, redigera eller ta
-                bort. Högerklicka på den plats du vill skapa en ny ikon och fyll
-                sedan i informationen. För att redigera klickar du bara på
-                redigera texten och sen på spara när du är klar.
+                As a general rule, you should only add locations you have
+                personally visited.
             </p>
             <p>
-                Du kan filtrera platserna på kartan efter olika kategorier genom
-                att klicka på menyn i hörnet.
+                On this page you can explore various interesting places across
+                Sweden. If you are logged in, you can add, edit, or delete
+                locations. Right-click, or press and hold on mobile, where you
+                want to place a new marker, then fill in the details. To edit an
+                existing location, click the edit button and hit save when
+                you're done.
+            </p>
+            <p>
+                You can filter the locations on the map by category using the
+                menu in the corner.
             </p>
             <a
                 href="https://www.strandvide.se"
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                Skapad av Joacim Strandvide
+                Created by Joacim Strandvide
             </a>
         </section>
     )

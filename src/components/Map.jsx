@@ -90,7 +90,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                     <input
                         className={styles.popupInput}
                         type="text"
-                        placeholder="Namn"
+                        placeholder="Name"
                         value={newMarker.name}
                         onChange={(e) =>
                             setNewMarker({ ...newMarker, name: e.target.value })
@@ -98,7 +98,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                     />
                     <textarea
                         className={styles.popupTextarea}
-                        placeholder="Beskrivning"
+                        placeholder="Description"
                         value={newMarker.popupcontent}
                         onChange={(e) =>
                             setNewMarker({
@@ -110,7 +110,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                     <input
                         className={styles.popupInput}
                         type="number"
-                        placeholder="Betyg (1-5)"
+                        placeholder="Score (1-5)"
                         min={0}
                         max={5}
                         value={newMarker.score}
@@ -135,7 +135,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                         ))}
                     </select>
                     <button className={styles.popupButton} onClick={handleAdd}>
-                        Skapa Ny
+                        Create New
                     </button>
                 </div>
             </Popup>

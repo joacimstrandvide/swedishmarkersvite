@@ -45,14 +45,14 @@ export default function MarkerPopup({
                 {/* Redigera knapp */}
                 {isLockedByOther ? (
                     <span className={styles.popupLocked}>
-                        Redigeras redan...
+                        Currently editing...
                     </span>
                 ) : currentUser ? (
                     <button
                         className={styles.popupEditButton}
                         onClick={isEditing ? stopEditing : startEditing}
                     >
-                        {isEditing ? 'Spara' : 'Redigera'}
+                        {isEditing ? 'Save' : 'Edit'}
                     </button>
                 ) : null}
             </div>
@@ -61,7 +61,7 @@ export default function MarkerPopup({
             <InlineEdit
                 value={marker.popupcontent}
                 type="textarea"
-                placeholder="Beskrivning"
+                placeholder="Description"
                 onSave={(val) => editMarker(marker.id, { popupcontent: val })}
                 disabled={!isEditing}
                 className={styles.popupDescription}
@@ -80,7 +80,7 @@ export default function MarkerPopup({
             {/* Ikon */}
             {isEditing && (
                 <div className={styles.popupRow}>
-                    <span>Ikon:</span>
+                    <span>Icon:</span>
                     <select
                         className={styles.popupIconSelect}
                         value={marker.icon || 'location.webp'}
@@ -99,7 +99,7 @@ export default function MarkerPopup({
 
             {/* Vem som skapade platsen */}
             {marker.author && (
-                <p className={styles.popupAuthor}>Skapad av {marker.author}</p>
+                <p className={styles.popupAuthor}>Created by {marker.author}</p>
             )}
 
             {/* Ta bort */}
@@ -108,7 +108,7 @@ export default function MarkerPopup({
                     className={styles.popupDeleteButton}
                     onClick={() => deleteMarker(marker.id)}
                 >
-                    Ta bort
+                    Remove
                 </button>
             )}
         </div>

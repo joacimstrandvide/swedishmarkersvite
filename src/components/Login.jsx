@@ -48,19 +48,19 @@ export default function Login() {
         } catch (err) {
             switch (err.code) {
                 case 'auth/email-already-in-use':
-                    setError('E-postadressen används redan.')
+                    setError('Email already in use.')
                     break
                 case 'auth/invalid-email':
-                    setError('Ogiltig e-postadress.')
+                    setError('Invalid email address.')
                     break
                 case 'auth/weak-password':
-                    setError('Lösenordet måste vara minst 6 tecken.')
+                    setError('Password must be at least 6 characters long.')
                     break
                 case 'auth/invalid-credential':
-                    setError('Fel e-post eller lösenord.')
+                    setError('Wrong email or password.')
                     break
                 default:
-                    setError('Något gick fel. Försök igen.')
+                    setError('Something went wrong, please try again.')
             }
         } finally {
             setLoading(false)
@@ -84,7 +84,7 @@ export default function Login() {
                     className={styles.logoutButton}
                     onClick={() => signOut(auth)}
                 >
-                    Logga ut
+                    Sign out
                 </button>
             </div>
         )
@@ -94,14 +94,14 @@ export default function Login() {
     return (
         <div className={styles.card}>
             <h2 className={styles.title}>
-                {mode === 'login' ? 'Logga in' : 'Skapa konto'}
+                {mode === 'login' ? 'Login' : 'Create account'}
             </h2>
 
             {mode === 'register' && (
                 <input
                     className={styles.input}
                     type="text"
-                    placeholder="Namn"
+                    placeholder="Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
@@ -110,7 +110,7 @@ export default function Login() {
             <input
                 className={styles.input}
                 type="email"
-                placeholder="E-post"
+                placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
             />
@@ -118,7 +118,7 @@ export default function Login() {
             <input
                 className={styles.input}
                 type="password"
-                placeholder="Lösenord"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
@@ -132,35 +132,35 @@ export default function Login() {
                 disabled={loading}
             >
                 {loading
-                    ? 'Laddar...'
+                    ? 'Loading...'
                     : mode === 'login'
-                      ? 'Logga in'
-                      : 'Skapa konto'}
+                      ? 'Login'
+                      : 'Create account'}
             </button>
 
             <p className={styles.toggle}>
                 {mode === 'login' ? (
                     <>
-                        Inget konto?{' '}
+                        No account?{' '}
                         <span
                             onClick={() => {
                                 setMode('register')
                                 setError('')
                             }}
                         >
-                            Skapa ett här
+                            Create one
                         </span>
                     </>
                 ) : (
                     <>
-                        Har du redan ett konto?{' '}
+                        Already have an account?{' '}
                         <span
                             onClick={() => {
                                 setMode('login')
                                 setError('')
                             }}
                         >
-                            Logga in
+                            Login
                         </span>
                     </>
                 )}

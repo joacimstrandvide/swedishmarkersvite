@@ -9,30 +9,30 @@ import styles from './Navbar.module.css'
 
 /* Kategorier */
 const categories = [
-    { value: 'all', label: 'Allt' },
-    { value: 'boat.webp', label: 'Båt' },
-    { value: 'food.webp', label: 'Mat' },
-    { value: 'swim.webp', label: 'Simmning' },
-    { value: 'beach.webp', label: 'Strand' },
+    { value: 'all', label: 'All' },
+    { value: 'boat.webp', label: 'Boat' },
+    { value: 'food.webp', label: 'Food' },
+    { value: 'swim.webp', label: 'Swimming' },
+    { value: 'beach.webp', label: 'Beach' },
     { value: 'kayak.webp', label: 'Kayak' },
-    { value: 'historic.webp', label: 'Historiskt' },
+    { value: 'historic.webp', label: 'Historical' },
     { value: 'museum.webp', label: 'Museum' },
-    { value: 'nature.webp', label: 'Natur' },
-    { value: 'view.webp', label: 'Utsiktsplats' },
-    { value: 'rest.webp', label: 'Rastplats' },
-    { value: 'parking.webp', label: 'Parkering' },
-    { value: 'pier.webp', label: 'Brygga' },
-    { value: 'bunker.webp', label: 'Militärt' },
+    { value: 'nature.webp', label: 'Nature' },
+    { value: 'view.webp', label: 'Viewpoint' },
+    { value: 'rest.webp', label: 'Rest Area' },
+    { value: 'parking.webp', label: 'Parking' },
+    { value: 'pier.webp', label: 'Pier' },
+    { value: 'bunker.webp', label: 'Military' },
     { value: 'spa.webp', label: 'Spa' },
-    { value: 'church.webp', label: 'Kyrka' },
-    { value: 'lighthouse.webp', label: 'Fyr' },
-    { value: 'potato.webp', label: 'Potatis' }, /* Skämt */
-    { value: 'animal.webp', label: 'Djur' },
-    { value: 'theme-park.webp', label: 'Nöjespark' },
-    { value: 'shipwreck.webp', label: 'Skeppsbrott' },
-    { value: 'nuclear.webp', label: 'Kärnkraft' },
-    { value: 'lake.webp', label: 'Sjö' },
-    { value: 'battery.webp', label: 'Laddning' }
+    { value: 'church.webp', label: 'Church' },
+    { value: 'lighthouse.webp', label: 'Lighthouse' },
+    { value: 'potato.webp', label: 'Potato' } /* Skämt */,
+    { value: 'animal.webp', label: 'Animals' },
+    { value: 'theme-park.webp', label: 'Theme Park' },
+    { value: 'shipwreck.webp', label: 'Shipwreck' },
+    { value: 'nuclear.webp', label: 'Nuclear Power' },
+    { value: 'lake.webp', label: 'Lake' },
+    { value: 'battery.webp', label: 'Charging' }
 ]
 
 // Skicka några props
@@ -50,7 +50,7 @@ function Navbar({ selectedCategory, onCategoryChange }) {
                         className={styles.customSelect}
                         onClick={() => setOpen((o) => !o)}
                     >
-                        <span>{selected?.label ?? 'Allt'}</span>
+                        <span>{selected?.label ?? 'All'}</span>
                     </div>
                     {open && (
                         <div className={styles.dropdown}>
@@ -74,7 +74,7 @@ function Navbar({ selectedCategory, onCategoryChange }) {
                     {/* Inloggning */}
                     <Popup
                         trigger={
-                            <button className={styles.button}>Konto</button>
+                            <button className={styles.button}>Account</button>
                         }
                         modal
                         nested
@@ -93,7 +93,7 @@ function Navbar({ selectedCategory, onCategoryChange }) {
 
                     <Popup
                         trigger={
-                            <button className={styles.button}>Hjälp</button>
+                            <button className={styles.button}>Help</button>
                         }
                         modal
                         nested
