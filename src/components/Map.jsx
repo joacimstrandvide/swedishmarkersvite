@@ -6,7 +6,6 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../firebase'
 // CSS
 import styles from './Map.module.css'
-import Rating from '@mui/material/Rating'
 // Leaflet
 import 'leaflet/dist/leaflet.css'
 import {
@@ -104,20 +103,6 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                             setNewMarker({
                                 ...newMarker,
                                 popupcontent: e.target.value
-                            })
-                        }
-                    />
-                    <input
-                        className={styles.popupInput}
-                        type="number"
-                        placeholder="Score (1-5)"
-                        min={0}
-                        max={5}
-                        value={newMarker.score}
-                        onChange={(e) =>
-                            setNewMarker({
-                                ...newMarker,
-                                score: e.target.value
                             })
                         }
                     />

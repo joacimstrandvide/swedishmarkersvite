@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Rating from '@mui/material/Rating'
 import InlineEdit from './Edit'
 import styles from './Map.module.css'
 
@@ -65,16 +64,6 @@ export default function MarkerPopup({
                 onSave={(val) => editMarker(marker.id, { popupcontent: val })}
                 disabled={!isEditing}
                 className={styles.popupDescription}
-            />
-
-            {/* Betyg */}
-            <Rating
-                value={marker.score || 0}
-                precision={0.5}
-                readOnly={!isEditing}
-                onChange={(_, newValue) =>
-                    editMarker(marker.id, { score: newValue })
-                }
             />
 
             {/* Ikon */}
