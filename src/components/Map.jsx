@@ -60,7 +60,6 @@ function AddMarkerOnRightClick({ onAdd, base }) {
                 lng: e.latlng.lng,
                 name: '',
                 popupcontent: '',
-                score: 0,
                 icon: 'location.webp'
             })
         }
@@ -68,7 +67,7 @@ function AddMarkerOnRightClick({ onAdd, base }) {
 
     const handleAdd = () => {
         if (!newMarker.name) return
-        onAdd({ ...newMarker, score: Number(newMarker.score) })
+        onAdd({ ...newMarker })
         setNewMarker(null)
     }
 
