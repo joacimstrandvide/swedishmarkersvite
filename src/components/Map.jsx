@@ -40,7 +40,6 @@ export const availableIcons = [
     'spa.webp',
     'church.webp',
     'lighthouse.webp',
-    'potato.webp',
     'animal.webp',
     'theme-park.webp',
     'shipwreck.webp',

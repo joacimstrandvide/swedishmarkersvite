@@ -26,7 +26,6 @@ const categories = [
     { value: 'spa.webp', label: 'Spa' },
     { value: 'church.webp', label: 'Church' },
     { value: 'lighthouse.webp', label: 'Lighthouse' },
-    { value: 'potato.webp', label: 'Potato' } /* Skämt */,
     { value: 'animal.webp', label: 'Animals' },
     { value: 'theme-park.webp', label: 'Theme Park' },
     { value: 'shipwreck.webp', label: 'Shipwreck' },
