@@ -203,18 +203,6 @@ function MapPart({ selectedCategory }) {
                             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                         />
                     </LayersControl.BaseLayer>
-                    <LayersControl.BaseLayer name="CartoDB Positron">
-                        <TileLayer
-                            attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                        />
-                    </LayersControl.BaseLayer>
-                    <LayersControl.BaseLayer name="OpenTopoMap">
-                        <TileLayer
-                            attribution='Map data: &copy; <a href="https://opentopomap.org">OpenTopoMap</a>'
-                            url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-                        />
-                    </LayersControl.BaseLayer>
                     <LayersControl.Overlay name="OpenSeaMap Nautical">
                         <TileLayer
                             attribution='Map data: &copy; <a href="http://www.openseamap.org">OpenSeaMap</a> contributors'

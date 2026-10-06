@@ -60,7 +60,7 @@ export default function MarkerPopup({
             <InlineEdit
                 value={marker.popupcontent}
                 type="textarea"
-                placeholder="Description"
+                placeholder="Description left empty..."
                 onSave={(val) => editMarker(marker.id, { popupcontent: val })}
                 disabled={!isEditing}
                 className={styles.popupDescription}

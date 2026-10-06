@@ -5,15 +5,15 @@ function Help() {
         <section className={styles.helpContainer}>
             {/* Titel */}
             <h1 className={styles.title}>
-                Swedish<strong>Markers</strong> - Help
+                Help
             </h1>
             <p>
                 As a general rule, you should only add locations you have
                 personally visited.
             </p>
             <p>
-                On this page you can explore various interesting places across
-                Sweden. If you are logged in, you can add, edit, or delete
+                On this page you can find various interesting places across
+                mostly Sweden. If you are logged in, you can add, edit, or delete
                 locations. Right-click, or press and hold on mobile, where you
                 want to place a new marker, then fill in the details. To edit an
                 existing location, click the edit button and hit save when
